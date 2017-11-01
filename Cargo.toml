@@ -1,0 +1,9 @@
+[package]
+name = "csplit"
+version = "0.1.0"
+authors = ["thepotatocoder <dbviana733@gmail.com>"]
+
+[dependencies]
+
+clap = {version = "2.19", features = ["yaml"]}
+grep = "0.1.7"
