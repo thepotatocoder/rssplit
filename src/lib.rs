@@ -8,9 +8,9 @@ use std::io::Read;
 use std::str::FromStr;
 use std::string::String;
 
-pub static USAGE: &'static str = include_str!("usage.txt");
-pub static VERSION: &'static str = include_str!("version.txt");
-pub static TRYHELP: &'static str = include_str!("tryhelp.txt");
+pub static USAGE: &'static str = include_str!("str/usage.txt");
+pub static VERSION: &'static str = include_str!("str/version.txt");
+pub static TRYHELP: &'static str = include_str!("str/tryhelp.txt");
 pub static ERROR: &'static str = "csplit: {}\nTry 'csplit --help' for more information.\n";
 
 struct Args {
@@ -140,7 +140,7 @@ pub fn uumain (matches: clap::ArgMatches) -> String {
 
 	let mut f_str = String::new();
 	match file.read_to_string(&mut f_str) {
-		Ok(_) => print!("{}", f_str),
+		Ok(_) => (),
 		Err(e) => return format!("csplit: cannot open '{}' for reading: {}\n", &args.input_file, e),
 	}
 
@@ -169,8 +169,7 @@ pub fn uumain (matches: clap::ArgMatches) -> String {
 		}
 	}
 	
-
-	let builder = grep::GrepBuilder::new("");
+	//let builder = grep::GrepBuilder::new("");
 
 	return format!("{}", args);
 }
