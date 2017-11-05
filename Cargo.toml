@@ -3,7 +3,20 @@ name = "csplit"
 version = "0.1.0"
 authors = ["thepotatocoder <dbviana733@gmail.com>"]
 
+<<<<<<< Updated upstream
 [dependencies]
+=======
+[[bin]]
+name = "rssplit"
+path = "src/bin/main.rs"
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
 
+[dependencies]
 clap = {version = "2.19", features = ["yaml"]}
 grep = "0.1.7"
