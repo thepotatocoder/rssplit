@@ -1,4 +1,4 @@
-Usage: csplit [OPTION]... FILE PATTERN...
+Usage: rssplit [OPTION]... FILE PATTERN...
 Output pieces of FILE separated by PATTERN(s) to files 'xx00', 'xx01', ...,
 and output byte counts of each piece to standard output.
 
@@ -23,7 +23,3 @@ Each PATTERN may be:
   {*}                repeat the previous pattern as many times as possible
 
 A line OFFSET is a required '+' or '-' followed by a positive integer.
-
-GNU coreutils online help: <http://www.gnu.org/software/coreutils/>
-Full documentation at: <http://www.gnu.org/software/coreutils/csplit>
-or available locally via: info '(coreutils) csplit invocation'

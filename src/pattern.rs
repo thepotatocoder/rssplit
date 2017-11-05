@@ -2,6 +2,7 @@
 extern crate grep;
 
 use args;
+use message;
 
 use std::fmt;
 use std::str::FromStr;
@@ -34,11 +35,11 @@ pub fn from_args(args: &args::Args) -> (Vec<Pattern>, String) {
 		
 		for (i, patt) in args.file_pattern.iter().enumerate() {
 		if patt.starts_with("{") {
-			//How does this work?
 			if (i == 0) || (patterns[i-1].repeater) {
-				return (patterns, format!("csplit: '{}': invalid pattern\n", patt));
+				return (patterns, format!("{}: '{}': invalid pattern\n", message::NAME, patt));
 			}
 
+			//How does this work?
 			let chars_to_trim: &[char] = &['{', '}'];
 			let s = patt.trim_matches(chars_to_trim);
 
@@ -60,10 +61,12 @@ pub fn from_args(args: &args::Args) -> (Vec<Pattern>, String) {
 				regex,
 				repeater: true
 			});
+
+		//TODO: Add rest of the cases
 		} else {
 			let regex = match grep::GrepBuilder::new(patt).build() {
 				Ok(r) => r,
-				Err(_) => panic!("Could not compile regex"),
+				Err(_) => return(patterns, "Could not compile regex".to_string()),
 			};
 
 			patterns.push(Pattern {
