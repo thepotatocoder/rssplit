@@ -1,28 +1,25 @@
 
 #[macro_use]
 extern crate clap;
-extern crate csplit;
+extern crate rssplit;
 
 #[cfg(test)]
 mod test_args {
 	use clap::App;
-	use csplit;
+    use rssplit;
 
-	#[test]
-	fn no_arguments() {
-		let yaml = load_yaml!("../src/csplit.yml");
-		let arg_vec = vec!["csplit"];
-		let matches = App::from_yaml(yaml).get_matches_from(arg_vec);
+	macro_rules! test {
+		($name: ident, $vec: expr, $eq: expr) => {
+			#[test]
+			fn $name() {
+				let yaml = load_yaml!("../src/bin/csplit.yml");
+				let matches = App::from_yaml(yaml).get_matches_from($vec);
 
-		assert_eq!(csplit::uumain(matches), format!("csplit: missing operand\n{}", csplit::TRYHELP.to_string()));
+				assert_eq!(rssplit::uumain(matches), $eq);
+			}
+		};
 	}
-
-	#[test]
-	fn only_input() {
-		let yaml = load_yaml!("../src/csplit.yml");
-		let arg_vec = vec!["csplit", "input"];
-		let matches = App::from_yaml(yaml).get_matches_from(arg_vec);
-
-		assert_eq!(csplit::uumain(matches), format!("csplit: missing operand after 'input'\n{}", csplit::TRYHELP.to_string()));
-	}
+	
+	test!(no_arguments, vec![""], format!("{}: missing operand\n{}", rssplit::message::NAME, rssplit::message::TRYHELP.to_string()));
+	test!(only_input, vec!["", "input"], format!("{}: missing operand after 'input'\n{}", rssplit::message::NAME, rssplit::message::TRYHELP.to_string()));
 }

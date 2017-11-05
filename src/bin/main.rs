@@ -2,7 +2,7 @@
 
 #[macro_use]
 extern crate clap;
-extern crate csplit;
+extern crate rssplit;
 
 use clap::App;
 
@@ -16,7 +16,7 @@ fn main() {
 	let matches = App::from_yaml(yaml).get_matches();
 
 	//Make sure arguments are valid (e.g.: digits is a valid i32)
-    print!("{}", csplit::uumain(matches));
+    print!("{}", rssplit::uumain(matches));
 	//Output file name related henanigans
 
 	//<C> set_input_file()

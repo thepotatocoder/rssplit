@@ -1,1 +1,1 @@
-Try 'csplit --help' for more information.
+Try 'rssplit --help' for more information.

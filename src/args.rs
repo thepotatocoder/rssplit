@@ -5,6 +5,8 @@ use std::fmt;
 use std::str::FromStr;
 use std::string::String;
 
+use message;
+
 pub struct Args {
     pub input_file: String,
     pub file_pattern: Vec<String>,
@@ -22,7 +24,7 @@ pub struct Args {
 impl fmt::Display for Args {
 	fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
 		write!(f,
-		"\tInput: '{:?}'\n\tFile Pattern: {:?}\n\tSuffix Format: {}\n\tPrefix: {}\n\tKeep files: {}\n\t\
+		"\tInput: '{}'\n\tFile Pattern: {:?}\n\tSuffix Format: {}\n\tPrefix: {}\n\tKeep files: {}\n\t\
 		Suppress matched: {}\n\tDigits: {}\n\tQuiet: {}\n\tElide empty files: {}\n",
 			self.input_file, self.file_pattern, self.suffix_format, self.prefix, self.keep_files,
 			self.suppress_matched, self.digits, self.quiet, self.elide_empty_files)
@@ -31,7 +33,7 @@ impl fmt::Display for Args {
 
 impl Args {
 	//TODO: Handle errors better
-	pub fn from_matches(matches: &clap::ArgMatches) -> Args {
+	pub fn from_matches(matches: &clap::ArgMatches) -> (Args, String) {
 		let mut args = Args {
  	       input_file: String::default(),
  	       file_pattern: Vec::new(),
@@ -46,17 +48,22 @@ impl Args {
 
     	args.input_file = match matches.value_of("INPUT") {
 			Some(a) => String::from(a),
-			None => String::from("this will never happen right?"),
+			None => return (args, format!("{}: missing input file", message::NAME)),
 		};
 
 		//TODO: Error Handling?
-    	args.file_pattern = matches.values_of("FILE_PATTERN").unwrap().map(String::from).collect();
+    	let res = match matches.values_of("FILE_PATTERN") {
+			Some(a) => a,
+			None => return (args, format!("{}: missing file pattern", message::NAME)),
+		};
+
+		args.file_pattern = res.map(String::from).collect();
 
 		args.suffix_format = match matches.value_of("SUFFIX_FORMAT") {
 	        Some(a) => a.to_string(),
 	        None => {
 				if matches.occurrences_of("SUFFIX_FORMAT") == 1 {
-					String::from("this will never happen right?")
+					return (args, format!("{}: error with suffix format", message::NAME));
 				} else {
 					String::from("%02d")
 				}
@@ -67,12 +74,11 @@ impl Args {
 	        Some(a) => a.to_string(),
 			None => {
 				if matches.occurrences_of("PREFIX") == 1 {
-					String::from("this will never happen right?")
+					return (args, format!("{}: error with prefix", message::NAME));
 				} else {
 					String::from("xx")
 				}
 			}
-
 	    };
 
 		if matches.occurrences_of("KEEP_FILES") != 0 {
@@ -89,7 +95,7 @@ impl Args {
 	            None => "2",
 	        }) {
 	            Ok(a) => a,
-	            Err(_) => panic!("Invalid number"),
+	            Err(_) => return (args, format!("{}: invalid digits", message::NAME)),
 	        };
 	
 		if matches.occurrences_of("QUIET") != 0 {
@@ -100,6 +106,6 @@ impl Args {
 			args.elide_empty_files = true;
 		}
 
-	    args
+	    (args, format!(""))
 	}
 }
