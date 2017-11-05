@@ -3,15 +3,6 @@ name = "rssplit"
 version = "0.1.0"
 authors = ["thepotatocoder <dbviana733@gmail.com>"]
 
-<<<<<<< HEAD
-<<<<<<< Updated upstream
-=======
-[[bin]]
-name = "rssplit"
-path = "src/bin/main.rs"
->>>>>>> master
-[dependencies]
-
 [[bin]]
 name = "rssplit"
 path = "src/bin/main.rs"
